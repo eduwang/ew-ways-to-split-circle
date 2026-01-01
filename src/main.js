@@ -1,4 +1,5 @@
 import './style.css'
+import Swal from 'sweetalert2'
 
 // ============================================
 // Polar Coordinate Utilities
@@ -338,7 +339,7 @@ function mountApp() {
   app.innerHTML = `
     <div class="container">
       <div class="controls">
-        <label for="n-input">Number of slices (1-24):</label>
+        <label for="n-input">원을 나누는 조각의 수(1-24):</label>
         <input 
           type="range" 
           id="n-input" 
@@ -348,17 +349,17 @@ function mountApp() {
         />
       </div>
       <div class="tool-mode-controls">
-        <button id="cut-btn" class="tool-btn active" aria-label="Cut mode - click to add slices">✂ Cut</button>
-        <button id="merge-btn" class="tool-btn" aria-label="Merge mode - click to remove slices">🪢 Merge</button>
-        <button id="tap-btn" class="tool-btn" aria-label="Tap mode - tap to set number of slices">🎵 Tap</button>
+        <button id="cut-btn" class="tool-btn active" aria-label="Cut mode - click to add slices">✂ 가위</button>
+        <button id="merge-btn" class="tool-btn" aria-label="Merge mode - click to remove slices">🪢 풀</button>
+        <button id="tap-btn" class="tool-btn" aria-label="Tap mode - tap to set number of slices">🎵 터치</button>
       </div>
       <div id="tap-pad-container" class="tap-pad-container" style="display: none;">
         <div id="tap-pad" class="tap-pad" aria-label="Tap pad - click or tap to record rhythm">
-          <div class="tap-pad-label">Tap Here</div>
+          <div class="tap-pad-label">터치하세요</div>
         </div>
         <div class="tap-info">
-          <div id="tap-count" class="tap-count">Total taps: 0</div>
-          <button id="reset-taps-btn" class="reset-taps-btn" aria-label="Reset taps">Reset taps</button>
+          <div id="tap-count" class="tap-count">터치한 횟수: 0</div>
+          <button id="reset-taps-btn" class="reset-taps-btn" aria-label="Reset taps">리셋</button>
         </div>
       </div>
       <div class="visualization-wrapper">
@@ -366,7 +367,7 @@ function mountApp() {
         <svg id="circle-svg" class="circle-svg cut-mode"></svg>
         <button id="increase-btn" class="step-btn" aria-label="Increase number of slices">+</button>
       </div>
-      <div id="n-label" class="label">N = ${state.N}</div>
+      <div id="n-label" class="label">조각 수 = ${state.N}</div>
     </div>
   `
   
@@ -446,9 +447,24 @@ function mountApp() {
   })
 }
 
+// Show initial alert on page load
+function showInitialAlert() {
+  Swal.fire({
+    title: '알림',
+    text: '이 페이지는 연구용으로 개발한 페이지가 아니라 웹 환경에서 상호작용 예시를 보여주기 위한 페이지입니다',
+    icon: 'info',
+    confirmButtonText: '확인',
+    confirmButtonColor: '#3085d6'
+  })
+}
+
 // Mount when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', mountApp)
+  document.addEventListener('DOMContentLoaded', () => {
+    mountApp()
+    showInitialAlert()
+  })
 } else {
   mountApp()
+  showInitialAlert()
 }
